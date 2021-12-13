@@ -1,5 +1,7 @@
 This simulator executes raintree WITHOUT the cleanup layer to better represent the coverage before the extra redundancy.
 
+```
+config.json
 {
 "NumberOfNodes": the 'starting' number of nodes in the simulated network - as you can run multiple simulations at once,
 "EndingNumberOfNodes": the 'ending' number of nodes in the simulated network - as you can run multiple simulations at once,
@@ -20,3 +22,24 @@ This simulator executes raintree WITHOUT the cleanup layer to better represent t
 "ResultFileOutputName": the prefix of the .json/.csv output files,
 "OriginatorIndex": the initial sender index, use -1 for random
 }
+```
+
+```
+results.json
+{
+  "NumberOfNodes": how many nodes in the network?,
+  "Levels": what was the number of levels in the network?,
+  "AverageRedundancy": what was the avg number of messages received?,
+  "NonDeadCoveragePercentage": what percentage of the network was hit before the cleanup layer,
+  "DeadCount": how many dead nodes?,
+  "ConsecutiveLevelZeroMatrix": {
+   how many consecutive zeroes before the cleanup layer: how many occurences
+  },
+```
+
+```
+results.csv
+Nodes,Levels,Comms,Redundancy,Coverage,Missed,LongestMiss
+Number of nodes, number of levels, number of (total) communications, avg redundancy, NonDeadCoveragePercentage, how many missed?, longest consecutive miss?
+
+```
