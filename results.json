@@ -1,0 +1,663 @@
+[
+ {
+  "NumberOfNodes": 81,
+  "Levels": 4,
+  "AverageRedundancy": 3.6582278481012658,
+  "NonDeadCoveragePercentage": 98,
+  "DeadCount": 0,
+  "ConsecutiveLevelZeroMatrix": {
+   "1": 2
+  },
+  "Communications": 288,
+  "IndividualNodeData": [
+   {
+    "GlobalPosition": 0,
+    "Address": "0210caffe538b4b3cbf32b6b6cd7366d83fa911d",
+    "Redundancy": 3,
+    "PartialViewershipPercentage": 95,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 1,
+    "Address": "0b2173ea90f2f575a871f35b8b4ec560b65ab786",
+    "Redundancy": 2,
+    "PartialViewershipPercentage": 96,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 2,
+    "Address": "0b9f9393d00280262703f5e12288cff2a602157c",
+    "Redundancy": 3,
+    "PartialViewershipPercentage": 96,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 3,
+    "Address": "0c416beba62966dc5e94246a8a84cd144bede876",
+    "Redundancy": 4,
+    "PartialViewershipPercentage": 95,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 4,
+    "Address": "0fbb36bae2c6e362b9ac8fc42155bb8979e05660",
+    "Redundancy": 6,
+    "PartialViewershipPercentage": 99,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 5,
+    "Address": "13c572a802d95e58054106eec2b87feac64012da",
+    "Redundancy": 3,
+    "PartialViewershipPercentage": 99,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 6,
+    "Address": "18dc75f04c48415fdd1abdb42fcc15f8ea334bf1",
+    "Redundancy": 3,
+    "PartialViewershipPercentage": 97,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 7,
+    "Address": "195f413265b11e6bed753f6302f4fd27c5bd0cc6",
+    "Redundancy": 4,
+    "PartialViewershipPercentage": 100,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 8,
+    "Address": "1fbde4d160d59b3f24d2eb777c11e408eb26ba97",
+    "Redundancy": 2,
+    "PartialViewershipPercentage": 98,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 9,
+    "Address": "21aa30cf14a5a32b1011df521defa0d8938dc02c",
+    "Redundancy": 3,
+    "PartialViewershipPercentage": 93,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 10,
+    "Address": "24ae1a801796f3e2ab0c936fd18d66ae9ae5be75",
+    "Redundancy": 5,
+    "PartialViewershipPercentage": 98,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 11,
+    "Address": "27e7ce10a0cc2aaf544b2f53ec40829dfee65805",
+    "Redundancy": 2,
+    "PartialViewershipPercentage": 96,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 12,
+    "Address": "2b5a0a6956530047c2714759d7ea008b99e9f4e5",
+    "Redundancy": 2,
+    "PartialViewershipPercentage": 96,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 13,
+    "Address": "2c1b446aaaedcefddcd37349f6029b57fb428466",
+    "Redundancy": 6,
+    "PartialViewershipPercentage": 100,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 14,
+    "Address": "2f0367de5afa22454d0719861a73a76f5a465f60",
+    "Redundancy": 3,
+    "PartialViewershipPercentage": 98,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 15,
+    "Address": "3026e2e993e97df58df713081d0952b7c167a069",
+    "Redundancy": 1,
+    "PartialViewershipPercentage": 96,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 16,
+    "Address": "308a8685bc8fb90adf188c6e15d5ce23ac9b76aa",
+    "Redundancy": 8,
+    "PartialViewershipPercentage": 98,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 17,
+    "Address": "32ba918806eac3a993edad1ba0a042ed187d974d",
+    "Redundancy": 3,
+    "PartialViewershipPercentage": 100,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 18,
+    "Address": "356458eeb1c59e8cf7cc817e4e5ba5de4bc11fb9",
+    "Redundancy": 5,
+    "PartialViewershipPercentage": 97,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 19,
+    "Address": "38f7e226f1ea0daee6dc08614611d2ec888e7c49",
+    "Redundancy": 2,
+    "PartialViewershipPercentage": 100,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 20,
+    "Address": "3ed59ccde44ef34181e0eb16eed445bebadcee80",
+    "Redundancy": 6,
+    "PartialViewershipPercentage": 97,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 21,
+    "Address": "3fb3f404b95b19c5bcb5ad793ff2ffe3f2b4ce7a",
+    "Redundancy": 1,
+    "PartialViewershipPercentage": 93,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 22,
+    "Address": "3fc0d62eb0803e83da3c668bf32b51159b3749ef",
+    "Redundancy": 0,
+    "PartialViewershipPercentage": 100,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 23,
+    "Address": "4a8d5429b9cf901673fdc0e79da28e6dc047f558",
+    "Redundancy": 5,
+    "PartialViewershipPercentage": 100,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 24,
+    "Address": "4d895668b3eb48084b626f0da12fbfed86b6388e",
+    "Redundancy": 6,
+    "PartialViewershipPercentage": 95,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 25,
+    "Address": "535eb53a18315220c1665c0cafe44054f4b97425",
+    "Redundancy": 2,
+    "PartialViewershipPercentage": 100,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 26,
+    "Address": "56759c19e03764910e5cdbcce23c6ae4cb2cc2bc",
+    "Redundancy": 7,
+    "PartialViewershipPercentage": 100,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 27,
+    "Address": "58d82736d71fa33368270fcaa52578b2213e4730",
+    "Redundancy": 1,
+    "PartialViewershipPercentage": 96,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 28,
+    "Address": "5a9c191e704f22c61f7f8d45d55867a36954373e",
+    "Redundancy": 3,
+    "PartialViewershipPercentage": 98,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 29,
+    "Address": "5f7ae1746132d94a752bcaacd85dff6833d2d82d",
+    "Redundancy": 2,
+    "PartialViewershipPercentage": 95,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 30,
+    "Address": "600ac36d33994d7cabf65cbf0b905d226b1a7278",
+    "Redundancy": 7,
+    "PartialViewershipPercentage": 94,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 31,
+    "Address": "61fcf220dc221db6197458c15d5229a9a7927e6e",
+    "Redundancy": 4,
+    "PartialViewershipPercentage": 100,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 32,
+    "Address": "673cafebb461de9b3e8dc200e3605d83f773928a",
+    "Redundancy": 2,
+    "PartialViewershipPercentage": 93,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 33,
+    "Address": "6fc9a749c985e7f5e33184b637fb57b98807ce4d",
+    "Redundancy": 6,
+    "PartialViewershipPercentage": 97,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 34,
+    "Address": "7a6466a0d157b774d7936f9eb81b025f2ad1a143",
+    "Redundancy": 4,
+    "PartialViewershipPercentage": 100,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 35,
+    "Address": "7e61291db3db6b1b46f509366a0ac3286d3665bf",
+    "Redundancy": 7,
+    "PartialViewershipPercentage": 97,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 36,
+    "Address": "83d9fa5567d7ea4a1f861f052c32e14470c51358",
+    "Redundancy": 2,
+    "PartialViewershipPercentage": 100,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 37,
+    "Address": "86359cc85656e79ad0562ad19f9b1749c67618c5",
+    "Redundancy": 1,
+    "PartialViewershipPercentage": 100,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 38,
+    "Address": "8ea28a642f03c9412553ffec59866ee3f4c53e64",
+    "Redundancy": 1,
+    "PartialViewershipPercentage": 99,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 39,
+    "Address": "8f414cc7d6b80faf1a881d0417d820b46aa762b2",
+    "Redundancy": 4,
+    "PartialViewershipPercentage": 99,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 40,
+    "Address": "90089dc3b6565888e45e954c1c728012e1dfd11e",
+    "Redundancy": 4,
+    "PartialViewershipPercentage": 99,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 41,
+    "Address": "93238d4d382d4d16c3a7625443d25ae27b9c85ad",
+    "Redundancy": 7,
+    "PartialViewershipPercentage": 99,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 42,
+    "Address": "9402370bef656ae910600735aa2f0ea60a465f6b",
+    "Redundancy": 4,
+    "PartialViewershipPercentage": 95,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 43,
+    "Address": "944c1f0fd3087a4ed9fad49a70f7d9067b3535db",
+    "Redundancy": 3,
+    "PartialViewershipPercentage": 99,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 44,
+    "Address": "95080753e1fa428aa73e4dd40c2710d0e401f796",
+    "Redundancy": 5,
+    "PartialViewershipPercentage": 97,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 45,
+    "Address": "9946b1cde963d27eb08e8c8c199c2748aa750d1e",
+    "Redundancy": 2,
+    "PartialViewershipPercentage": 98,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 46,
+    "Address": "9b13ca35cb74fa6da2ad6935c08d4a11fcaea9e9",
+    "Redundancy": 4,
+    "PartialViewershipPercentage": 100,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 47,
+    "Address": "9fa0d29d7e15491613d1eb50e8791b6446aacc7d",
+    "Redundancy": 4,
+    "PartialViewershipPercentage": 100,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 48,
+    "Address": "a5af2511cf0ba6d8b5a4f3b6e0681fb5896c7fcf",
+    "Redundancy": 0,
+    "PartialViewershipPercentage": 97,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 49,
+    "Address": "ab89549c3f8bd031542ed0c53e1da2edef0866a0",
+    "Redundancy": 5,
+    "PartialViewershipPercentage": 98,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 50,
+    "Address": "ae44ad76183b3477375033bf5c773b63c961f1a3",
+    "Redundancy": 5,
+    "PartialViewershipPercentage": 96,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 51,
+    "Address": "aeecb17e5794115f71635d7a54886a0fb3437c4d",
+    "Redundancy": 5,
+    "PartialViewershipPercentage": 100,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 52,
+    "Address": "b3363d633714cf41a59968d96adc98d4b921bc99",
+    "Redundancy": 2,
+    "PartialViewershipPercentage": 100,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 53,
+    "Address": "b37e22398c95d38bc778f5c8dca31779d28f7fbe",
+    "Redundancy": 6,
+    "PartialViewershipPercentage": 97,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 54,
+    "Address": "b5644c5ad11a770ba86c971d7dfa56d5aa4e7918",
+    "Redundancy": 1,
+    "PartialViewershipPercentage": 100,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 55,
+    "Address": "ba487ada7dfbeeb18b8cc631df37a2f172d583a2",
+    "Redundancy": 4,
+    "PartialViewershipPercentage": 100,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 56,
+    "Address": "be19218c9564f2711897c50ca272583308c8c2dc",
+    "Redundancy": 2,
+    "PartialViewershipPercentage": 97,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 57,
+    "Address": "beb75b2cbe82306acfca2bfbe5bcb12c7bce1426",
+    "Redundancy": 4,
+    "PartialViewershipPercentage": 100,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 58,
+    "Address": "c00614a9a076a1c903f54c95a5f59b583022e697",
+    "Redundancy": 4,
+    "PartialViewershipPercentage": 100,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 59,
+    "Address": "c115d01886843e8d0df3c917eae2e8ed73db9649",
+    "Redundancy": 4,
+    "PartialViewershipPercentage": 94,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 60,
+    "Address": "c8095081550cab77f9c1f21cca2c9fbfb968c3cf",
+    "Redundancy": 4,
+    "PartialViewershipPercentage": 94,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 61,
+    "Address": "c9c6aca2f42f1fb78b471e5626000df99c4e8583",
+    "Redundancy": 4,
+    "PartialViewershipPercentage": 100,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 62,
+    "Address": "ca467dc8d1ece711958f25f0deb35ec9ae560c01",
+    "Redundancy": 2,
+    "PartialViewershipPercentage": 96,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 63,
+    "Address": "cb40dc12874e2dcfe38c96cff0f0e7a2b59f3cb5",
+    "Redundancy": 4,
+    "PartialViewershipPercentage": 95,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 64,
+    "Address": "cbfe98aee557879d268e352b0fefeeac3a57ee56",
+    "Redundancy": 2,
+    "PartialViewershipPercentage": 94,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 65,
+    "Address": "cf26ee540a2d9d1ae223e37576a6b2770dc36922",
+    "Redundancy": 1,
+    "PartialViewershipPercentage": 95,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 66,
+    "Address": "d309f2ec2161f8a3d63272bd1dbc96ca625dbb5a",
+    "Redundancy": 5,
+    "PartialViewershipPercentage": 96,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 67,
+    "Address": "d6c2d7dd0e6ecdabc5651a4d9956e18d5abe6498",
+    "Redundancy": 5,
+    "PartialViewershipPercentage": 98,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 68,
+    "Address": "dd9fae3879cd0d371c7361c597631a66e0dbd053",
+    "Redundancy": 5,
+    "PartialViewershipPercentage": 97,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 69,
+    "Address": "ddede72f60cf65f5d16a612ddfc7934092b52758",
+    "Redundancy": 2,
+    "PartialViewershipPercentage": 99,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 70,
+    "Address": "e278ec7042c51bf6a97e56beb2cc28a2a7bf1209",
+    "Redundancy": 2,
+    "PartialViewershipPercentage": 96,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 71,
+    "Address": "e7239c28917ef81bf6f51485c22881ddfbb8703a",
+    "Redundancy": 9,
+    "PartialViewershipPercentage": 100,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 72,
+    "Address": "e7837369b4103572e1ddd5d9093637645bb6b003",
+    "Redundancy": 3,
+    "PartialViewershipPercentage": 95,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 73,
+    "Address": "eb1c78f709441851e4303266f43051b29ca33790",
+    "Redundancy": 2,
+    "PartialViewershipPercentage": 97,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 74,
+    "Address": "ec046a007a52bd92ba65c488f456bd342eee6a4e",
+    "Redundancy": 4,
+    "PartialViewershipPercentage": 97,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 75,
+    "Address": "ecb89dd048c03d3869d0becd0220798127ad6d7d",
+    "Redundancy": 1,
+    "PartialViewershipPercentage": 98,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 76,
+    "Address": "ed47a6c5da2958015fb7cc1679fbcaf2e01c799d",
+    "Redundancy": 2,
+    "PartialViewershipPercentage": 94,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 77,
+    "Address": "f56f6f99a47e26d3c5819370f1c551dcfcd0dc02",
+    "Redundancy": 3,
+    "PartialViewershipPercentage": 98,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 78,
+    "Address": "f721275b5592947d673e66c8d9252802e70fff1a",
+    "Redundancy": 3,
+    "PartialViewershipPercentage": 100,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 79,
+    "Address": "f73589c646ff8cf09a2e78544a961fa78e584684",
+    "Redundancy": 7,
+    "PartialViewershipPercentage": 96,
+    "PartialAddressBook": null,
+    "IsDead": false
+   },
+   {
+    "GlobalPosition": 80,
+    "Address": "fd2eefb321ba626d421e6f74e0115001b58951cb",
+    "Redundancy": 3,
+    "PartialViewershipPercentage": 100,
+    "PartialAddressBook": null,
+    "IsDead": false
+   }
+  ]
+ }
+]
