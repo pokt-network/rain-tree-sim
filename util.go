@@ -5,13 +5,14 @@ import (
 	"encoding/csv"
 	"encoding/hex"
 	"encoding/json"
-	"gonum.org/v1/gonum/stat/distuv"
 	"io/ioutil"
 	"log"
 	"math"
 	"math/big"
 	"math/rand"
 	"os"
+
+	"gonum.org/v1/gonum/stat/distuv"
 )
 
 func getPartialViewershipCurve(c *Config) []int {
@@ -49,7 +50,7 @@ func printResults(results []Results, c *Config) {
 		log.Println(string(resBytes))
 	}
 	// write csv too
-	f, err := os.Create(c.ResultFileOutputName+".csv")
+	f, err := os.Create(c.ResultFileOutputName + ".csv")
 	defer f.Close()
 
 	if err != nil {

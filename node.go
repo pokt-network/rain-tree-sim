@@ -4,11 +4,11 @@ type Node struct {
 	GlobalPosition              uint64
 	Address                     string
 	PartialViewershipPercentage uint8
-	PartialAddressBookPosition int
-	PartialAddressBook         ExportableAddressBook
-	IsDead                     bool
+	PartialAddressBookPosition  int
+	PartialAddressBook          ExportableAddressBook
+	IsDead                      bool
 	MessagesReceived            int
-	Message                     Message
+	Message                     *Message
 	exportPartialAddressBook    bool
 }
 
@@ -45,7 +45,7 @@ func (n Node) WithMessage(m Message, isSelfMessage bool) (node Node) {
 		}
 	}
 	// queue the message
-	n.Message = m
+	n.Message = &m
 	// sort by highest level message; (might not be needed)
 	return n
 }

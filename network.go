@@ -23,7 +23,7 @@ func NewRainTreeNetwork(c *Config) {
 				break
 			}
 		}
-		results= append(results, GatherData(&conf, globalAddressBook))
+		results = append(results, GatherData(&conf, globalAddressBook))
 	}
 	printResults(results, c)
 }
@@ -42,8 +42,12 @@ func SetupOriginator(c *Config, globalAddressBook AddressBook) {
 
 func RunQueue(c *Config, globalAddressBook AddressBook) (actionDone bool) {
 	// for every node in the global address book
-	for i := 0; i < len(globalAddressBook); i++ {
+	for i, n := range globalAddressBook {
+		if n.Message == nil {
+			continue
+		}
 		m := globalAddressBook[i].Message.Copy()
+		globalAddressBook[i].Message = nil
 		if m.Hash == "" {
 			continue
 		}
@@ -53,7 +57,7 @@ func RunQueue(c *Config, globalAddressBook AddressBook) (actionDone bool) {
 		}
 		actionDone = true
 		// handle each m
-		PropagateMessage(globalAddressBook[i], m, globalAddressBook, c)
+		PropagateMessage(n, m, globalAddressBook, c)
 	}
 	return
 }
@@ -68,7 +72,11 @@ func PropagateMessage(node Node, message Message, globalAddressBook AddressBook,
 	}
 	networkLevels := CalculateLevels(partialAddressBook)
 	// calibrate levels (if message contains incorrect information)
-	levelWithDec, levelWithoutDec := CalibrateLevels(networkLevels, message)
+	// levelWithDec, levelWithoutDec := CalibrateLevels(networkLevels, message)
+
+	levelWithoutDec := int64(message.Level)
+	levelWithDec := int64(message.Level - 1)
+
 	message.Level = int(levelWithDec)
 	message.NetworkLevels = int(networkLevels)
 	// redundancy layer logic
