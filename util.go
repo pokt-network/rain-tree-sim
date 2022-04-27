@@ -5,70 +5,50 @@ import (
 	"encoding/csv"
 	"encoding/hex"
 	"encoding/json"
-	"gonum.org/v1/gonum/stat/distuv"
-	"io/ioutil"
+	"fmt"
 	"log"
 	"math"
 	"math/big"
 	"math/rand"
 	"os"
+	"strings"
+
+	"gonum.org/v1/gonum/stat/distuv"
 )
 
-func getPartialViewershipCurve(c *Config) []int {
+const (
+	// set max & min for practicality
+	partialViewershipCurveMax = 100
+	partialViewershipCurveMin = 10
+)
+
+func generatePartialViewershipCurve(c *Config) []int {
 	log.Println("Calculating the 'curve' for the partial viewership distribution")
 	dist := distuv.UnitNormal
-	dist.Mu = float64(c.TargetPartialViewershipPercentage)
+	dist.Mu = float64(c.PartialViewershipMedian)
 	dist.Sigma = float64(c.PartialViewershipStdDev)
 	curveArr := make([]int, c.NumberOfNodes)
 	for i := range curveArr {
 		if c.InvertCurve {
+			// Discuss: what kind of inversion is this?
 			curveArr[i] = int(math.Round(dist.Rand())+45) % 100
 		} else {
 			curveArr[i] = int(math.Round(dist.Rand()))
 		}
-		// set max & min for practicality
-		// max = 100 & min = 10
-		if curveArr[i] > 100 {
-			curveArr[i] = 100
-		} else if curveArr[i] <= 10 {
-			curveArr[i] = 10
+		// Cap at max
+		if curveArr[i] > partialViewershipCurveMax {
+			curveArr[i] = partialViewershipCurveMax
+		}
+		// Cap at min
+		if curveArr[i] <= partialViewershipCurveMin {
+			curveArr[i] = partialViewershipCurveMin
 		}
 	}
 	return curveArr
 }
 
-func printResults(results []Results, c *Config) {
-	log.Println("Printing results")
-	resBytes, err := json.MarshalIndent(&results, "", " ")
-	if err != nil {
-		panic(err)
-	}
-	err = ioutil.WriteFile(c.ResultFileOutputName+".json", resBytes, 0777)
-	if err != nil {
-		log.Println("Error trying to print result resBytes: ", err.Error())
-		log.Println(string(resBytes))
-	}
-	// write csv too
-	f, err := os.Create(c.ResultFileOutputName+".csv")
-	defer f.Close()
-
-	if err != nil {
-
-		log.Fatalln("failed to open file", err)
-	}
-
-	w := csv.NewWriter(f)
-	defer w.Flush()
-
-	for _, record := range NewResultsCSV(results) {
-		if err := w.Write(record); err != nil {
-			log.Fatalln("error writing record to file", err)
-		}
-	}
-}
-
-func getIsDead(index uint64, c *Config) bool {
-	randSeed()
+func getIsDead(c *Config, index uint64) bool {
+	// TODO: switch to `slices.Contains` in Go 1.18
 	if c.FixedDeadNodes {
 		for _, in := range c.FixedDeadNodesIndexArray {
 			if index == in {
@@ -77,18 +57,18 @@ func getIsDead(index uint64, c *Config) bool {
 		}
 		return false
 	}
-	i := rand.Intn(99) + 1
-	if uint8(i) <= c.DeadNodePercentage {
-		return true
-	}
-	return false
+
+	// If no configs were provided, randomize the liveness of the node based on DeadNodePercentage
+	setRandSeed()
+	i := rand.Intn(99) + 1 // TODO: Why not just do `return rand.Intn(100) <= c.DeadNodePercentage`?
+	return uint8(i) <= c.DeadNodePercentage
 }
 
 func logBase3(x float64) float64 {
 	return math.Log(x) / math.Log(3.0)
 }
 
-func randSeed() {
+func setRandSeed() {
 	seed, err := cryptRand.Int(cryptRand.Reader, big.NewInt(math.MaxInt64))
 	if err != nil {
 		panic(err)
@@ -104,21 +84,12 @@ func (a *Address) String() string {
 	return hex.EncodeToString(a[:])
 }
 
-func newAddress() string {
-	var addr Address
-	_, err := rand.Read(addr[:])
-	if err != nil {
-		_ = err
-	}
-	return addr.String()
-}
-
 // simulated hash
 
 type Hash [32]byte
 
 func newHash() string {
-	randSeed()
+	setRandSeed()
 	var hash Hash
 	_, err := rand.Read(hash[:])
 	if err != nil {
@@ -129,4 +100,29 @@ func newHash() string {
 
 func (h *Hash) String() string {
 	return hex.EncodeToString(h[:])
+}
+
+func PrintPartialViewershipCurveToFile(curve []int) {
+	bz, _ := json.Marshal(curve)
+	log.Println(string(bz))
+}
+
+func DumpPartialViewershipCurveToFile(curve []int) {
+	f, err := os.Create(fmt.Sprintf("curves/partial_viewership_curve.%s.csv", randomFilePrefix()))
+	if err != nil {
+		log.Fatalln("failed to open file", err)
+	}
+	defer f.Close()
+
+	w := csv.NewWriter(f)
+	defer w.Flush()
+
+	st := strings.Fields(strings.Trim(fmt.Sprint(curve), "[]"))
+	w.Write(st)
+}
+
+func randomFilePrefix() string {
+	randBytes := make([]byte, 4)
+	rand.Read(randBytes)
+	return hex.EncodeToString(randBytes)
 }

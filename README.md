@@ -1,44 +1,64 @@
-This simulator executes raintree WITHOUT the cleanup layer to better represent the coverage before the extra redundancy.
+# RainTree simulator
 
-```
-config.json
+This simulator executes RainTree.
+
+## Not Implemented
+
+The cleanup layer for extra redundancy is not implemented in order to represent the overall coverage.
+
+## Configs
+
+Configs are store in `config.json`.
+
+```json
 {
-"NumberOfNodes": the 'starting' number of nodes in the simulated network - as you can run multiple simulations at once,
-"EndingNumberOfNodes": the 'ending' number of nodes in the simulated network - as you can run multiple simulations at once,
-"DeadNodePercentage": % of nodes not responding/propagating,
-"FixedDeadNodes": if true, use the FixedDeadNodesIndexArray inorder to kill specific node as certain indices,
-"FixedDeadNodesIndexArray": if FixedDeadNodes is on, which nodes would you like to kill?,
-"RandomizePartialAddressBooks": would you like to randomize the partial address books? If not, though they'll be partial, they'll be in a fixed order,
-"ViewershipPercentageFixed": would you like to have a fixed viewership curve? if true, use ViewershipCurveArray below to set specific values,
-"ViewershipCurveArray": if ViewershipPercentageFixed=true, set a specific curve of viewership for each node. Ex. [90,80,70] means 90%, 80%, 70& viewership respectively ,
-"TargetPartialViewershipPercentage": the global median viewership percentage of partial addressbooks,
-"PartialViewershipStdDev": how far do you want the global std deviation to be from the TargetPartialViewershipPercentage median,
-"InvertCurve": invert the viewership curve for fun doomsday scenarios,
-"RedundancyLayerRightOn": turn on the right side redundancy layer (not the cleanup layer),
-"RedundancyLayerLeftOn": turn on the left side redundancy layer (not the cleanup layer),
-"MaxHotlist": how many nodes on the 'hotlist' for first level - initial propagation,
-"ShowIndividualNodeResults": show individual node results in the results.json/csv,
-"ShowIndividualNodePartialAddressBooks": show individual node addrbooks in the results.json/csv,,
-"ResultFileOutputName": the prefix of the .json/.csv output files,
-"OriginatorIndex": the initial sender index, use -1 for random
+  "NumNodesFirstSimulation":               the # of nodes in the first simulation,
+  "NumNodesLastSimulation":                the # of nodes in the last simulation,
+
+  "DeadNodePercentage":                    % of nodes that should be configured to be non-responsive (i.e. not propagating messages),
+  "FixedDeadNodes":                        if true, use `FixedDeadNodesIndexArray` in order to specify which nodes should be non-responsive; random otherwise,
+  "FixedDeadNodesIndexArray":              if `FixedDeadNodes` is true, this array specifies which nodes should be non-responsive; ignored otherwise,
+
+  "InvertCurve":                           if true, invert the viewership curve; used for doomsday scenarios,
+  "FixedViewershipPercentage":             if true, uses `FixedViewershipCurveArray` to specify the partial viewership curve; otherwise it is random,
+  "FixedViewershipCurveArray":             if `FixedViewershipPercentage` is true, this array specifies each node's viewership (e.g. [90,80,70] implies 90%, 80%, 70& viewership respectively),
+
+  "RandomizePartialAddressBooks":          if true, shuffle the partial address book after computation,
+  "PartialViewershipMedian":               the global median viewership percentage of partial address books,
+  "PartialViewershipStdDev":               the global std deviation of partial address books relative to `PartialViewershipMedian`,
+
+  "RedundancyLayerRightOn":                turn on the right side redundancy layer (not the cleanup layer),
+  "RedundancyLayerLeftOn":                 turn on the left side redundancy layer (not the cleanup layer),
+
+  "OriginatorIndex":                       index of the initial sender; -1 for random,
+  "MaxHotlist":                            the # of nodes in the `hostlist` for the first level (i.e. initial propagation),
+
+  "ShowIndividualNodeSimResult":           if true, show individual node sim results in the `ResultFileOutputName`.json/csv,
+  "ShowIndividualNodePartialAddressBooks": if true, show individual node partial address books in the `ResultFileOutputName`.json/csv,
+  "ResultFileOutputName":                  the prefix of the .json/.csv output files
 }
 ```
 
-```
+// TODO(discuss): `NumberOfNodes` and `EndingNumberOfNodes` should be changed to `NumberOfNodesInGlobalNetwork` and `NumOriginatorNodesInSimulation`
+
+## Results
+
 results.json
+
+```json
 {
-  "NumberOfNodes": how many nodes in the network?,
-  "Levels": what was the number of levels in the network?,
-  "AverageRedundancy": what was the avg number of messages received?,
+  "NumberOfNodes":             how many nodes in the network?,
+  "Levels":                    what was the number of levels in the network?,
+  "AverageRedundancy":         what was the avg number of messages received?,
   "NonDeadCoveragePercentage": what percentage of the network was hit before the cleanup layer,
-  "DeadCount": how many dead nodes?,
+  "DeadCount":                 how many dead nodes?,
   "ConsecutiveLevelZeroMatrix": {
-   how many consecutive zeroes before the cleanup layer: how many occurences
+      how many consecutive zeroes before the cleanup layer: how many occurences
   },
 ```
 
 ```
-results.csv
+SimResult.csv
 Nodes,Levels,Comms,Redundancy,Coverage,Missed,LongestMiss
 Number of nodes, number of levels, number of (total) communications, avg redundancy, NonDeadCoveragePercentage, how many missed?, longest consecutive miss?
 

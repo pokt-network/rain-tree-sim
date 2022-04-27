@@ -1,20 +1,29 @@
 {
-  "NumberOfNodes": 81,
-  "EndingNumberOfNodes": 81,
+  "NumNodesFirstSimulation": 81,
+  "NumNodesLastSimulation": 81,
+
   "DeadNodePercentage": 0,
   "FixedDeadNodes": false,
   "FixedDeadNodesIndexArray": [9, 10, 11],
-  "RandomizePartialAddressBooks": true,
-  "ViewershipPercentageFixed": false,
-  "ViewershipCurveArray": [66,66,66,66,66,95,92,94,97,97,100,98,98,98,92,96,92,94,98,89,99,93,90,99,94,92,93],
-  "TargetPartialViewershipPercentage": 98,
-  "PartialViewershipStdDev": 3,
+
   "InvertCurve": false,
+  "FixedViewershipPercentage": false,
+  "FixedViewershipCurveArray": [
+    66, 66, 66, 66, 66, 95, 92, 94, 97, 97, 100, 98, 98, 98, 92, 96, 92, 94, 98,
+    89, 99, 93, 90, 99, 94, 92, 93
+  ],
+
+  "RandomizePartialAddressBooks": true,
+  "PartialViewershipMedian": 98,
+  "PartialViewershipStdDev": 3,
+
   "RedundancyLayerRightOn": true,
   "RedundancyLayerLeftOn": true,
+
+  "OriginatorIndex": -1,
   "MaxHotlist": 2,
-  "ShowIndividualNodeResults": true,
+
+  "ShowIndividualNodeSimResult": true,
   "ShowIndividualNodePartialAddressBooks": false,
-  "ResultFileOutputName": "results",
-  "OriginatorIndex": -1
+  "ResultFileOutputName": "sim_results.json"
 }

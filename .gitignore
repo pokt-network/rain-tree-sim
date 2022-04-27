@@ -1,2 +1,15 @@
+# Go deps 
 vendor/*
+
+# IDE Settings
+.vscode
 .idea/*
+
+# Binaries
+rain-tree-sim
+
+# Outputs
+curves/partial_viewership_curve.*.csv
+results.json
+
+.DS_Store

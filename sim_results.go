@@ -1,12 +1,16 @@
 package main
 
 import (
+	"encoding/csv"
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"math"
+	"os"
 )
 
-type Results struct {
+type SimResult struct {
 	NumberOfNodes              uint64
 	Levels                     uint
 	AverageRedundancy          float64
@@ -17,17 +21,19 @@ type Results struct {
 	IndividualNodeData         AddressBook
 }
 
-type ResultsCSV [][]string
+type SimResults []SimResult
 
-func NewResultsCSV(data []Results) (rcsv ResultsCSV) {
-	rcsv = make([][]string, 0)
-	dataLen := len(data)
+type SimResultCSV [][]string
+
+func NewSimResultCSV(simResults SimResults) (resultCsv SimResultCSV) {
+	resultCsv = make([][]string, 0)
+	dataLen := len(simResults)
 	if dataLen < 1 {
 		return
 	}
 	titles := []string{"Nodes", "Levels", "Comms", "Redundancy", "Coverage", "Missed", "LongestMiss"}
-	rcsv = append(rcsv, titles)
-	for _, res := range data {
+	resultCsv = append(resultCsv, titles)
+	for _, res := range simResults {
 		missed, longestMiss := 0, 0
 		for miss, occur := range res.ConsecutiveLevelZeroMatrix {
 			missed += miss * occur
@@ -35,7 +41,7 @@ func NewResultsCSV(data []Results) (rcsv ResultsCSV) {
 				longestMiss = miss
 			}
 		}
-		rcsv = append(rcsv, []string{
+		resultCsv = append(resultCsv, []string{
 			fmt.Sprintf("%d", res.NumberOfNodes), fmt.Sprintf("%d", res.Levels),
 			fmt.Sprintf("%d", res.Communications), fmt.Sprintf("%f", res.AverageRedundancy),
 			fmt.Sprintf("%d", int(res.NonDeadCoveragePercentage)), fmt.Sprintf("%d", missed), fmt.Sprintf("%d", longestMiss)})
@@ -43,16 +49,16 @@ func NewResultsCSV(data []Results) (rcsv ResultsCSV) {
 	return
 }
 
-func GatherData(c *Config, globalAddressBook AddressBook) (r Results) {
+func GatherData(c *Config, globalAddressBook AddressBook) (r SimResult) {
 	log.Println("Gathering network level data")
-	r = Results{
+	r = SimResult{
 		ConsecutiveLevelZeroMatrix: make(map[int]int),
 	}
 	fullListSize := float64(len(globalAddressBook))
 	r.Levels = uint(math.Ceil(math.Round(logBase3(fullListSize)*100) / 100))
 	r.NumberOfNodes = c.NumberOfNodes
 	// show individual node data?
-	if c.ShowIndividualNodeResults {
+	if c.ShowIndividualNodeSimResult {
 		r.IndividualNodeData = globalAddressBook
 	}
 	totalRedundancy, totalNonDeadMiss, currentConsecutiveZeroCount := float64(0), float64(0), 0
@@ -91,4 +97,34 @@ func GatherData(c *Config, globalAddressBook AddressBook) (r Results) {
 	r.NonDeadCoveragePercentage = math.Round((1.0 - totalNonDeadMiss/float64(c.NumberOfNodes-r.DeadCount)) * 100)
 	r.Communications = uint64(totalRedundancy - 1)
 	return
+}
+
+func (simResults *SimResults) Print(c *Config) {
+	log.Println("Printing SimResult")
+	resBytes, err := json.MarshalIndent(simResults, "", " ")
+	if err != nil {
+		panic(err)
+	}
+	err = ioutil.WriteFile(c.ResultFileOutputName+".json", resBytes, 0777)
+	if err != nil {
+		log.Println("Error trying to print result resBytes: ", err.Error())
+		log.Println(string(resBytes))
+	}
+	// write csv too
+	f, err := os.Create(c.ResultFileOutputName + ".csv")
+	defer f.Close()
+
+	if err != nil {
+
+		log.Fatalln("failed to open file", err)
+	}
+
+	w := csv.NewWriter(f)
+	defer w.Flush()
+
+	for _, record := range NewSimResultCSV(*simResults) {
+		if err := w.Write(record); err != nil {
+			log.Fatalln("error writing record to file", err)
+		}
+	}
 }
