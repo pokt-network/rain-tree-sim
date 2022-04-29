@@ -10,7 +10,7 @@ type Node struct {
 	PartialAddressBook          ExportableAddressBook
 	IsDead                      bool
 	MessagesReceived            int
-	Message                     Message
+	Message                     *Message
 	exportPartialAddressBook    bool
 }
 
@@ -59,7 +59,7 @@ func (n Node) CopyNodeWithMessage(m Message, isSelfMessage bool) (node Node) {
 		}
 	}
 	// queue the message on this node
-	n.Message = m
+	n.Message = &m
 	return n
 }
 

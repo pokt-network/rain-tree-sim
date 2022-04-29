@@ -53,8 +53,12 @@ func getOriginatorNode(c *Config, globalAddressBook AddressBook) *Node {
 
 func runQueue(c *Config, globalAddressBook AddressBook) (actionDone bool) {
 	for i, node := range globalAddressBook {
+		if node.Message == nil {
+			continue
+		}
 		// TODO: Because we pass by value below, we don't need to do a copy here
 		m := globalAddressBook[i].Message.Copy()
+		globalAddressBook[i].Message = nil
 		fmt.Println(i, m.Level, m.Hash)
 		// TODO: What does an empty hash represent?
 		if m.Hash == "" {
@@ -80,7 +84,9 @@ func propagateMessage(c *Config, node *Node, message Message, globalAddressBook 
 	partialAddressBookSize := len(partialAddressBook)
 	numNetworkLevels := CalculateNumLevelsInAddrBook(partialAddressBook)
 	// Calibrate levels (if message contains incorrect information)
-	levelWithDec, levelWithoutDec := CalibrateLevels(numNetworkLevels, message)
+	// levelWithDec, levelWithoutDec := CalibrateLevels(numNetworkLevels, message)
+	levelWithoutDec := int64(message.Level)
+	levelWithDec := int64(message.Level - 1)
 	message.Level = int(levelWithDec)
 	message.TotalNumNetworkLevels = int(numNetworkLevels)
 	// TODO(olshansky): Haven't explored redundancy yet
