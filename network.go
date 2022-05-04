@@ -7,20 +7,21 @@ import (
 	"sort"
 )
 
-// TODO: A better design would be to create a Network struct and have `globalAddressBook` and `Config`
-// attributes, so we don't have don't have to pass them around to all the functions here.
-
+// TODO(drewsky): A better design would be to create a Network struct and have `globalAddressBook` and `Config` attributes,
+// so we don't have don't have to pass them around to all the functions here.
 func NewRainTreeNetwork(c *Config) {
 	results := make(SimResults, 0)
+
 	for numNodesToSimulate := c.NumNodesFirstSimulation; numNodesToSimulate <= c.NumNodesLastSimulation; numNodesToSimulate++ {
-		conf := *c // copy config
-		conf.NumberOfNodes = numNodesToSimulate
+		conf := *c                              // assignment copies config
+		conf.NumberOfNodes = numNodesToSimulate // update config for this simulation only
 
+		// Prepare the global and local addr books
 		globalAddressBook := GenerateGlobalAddressBook(&conf)
-		InitializeAllNodesInGlobalAddressBook(&conf, globalAddressBook)
-		origNode := getOriginatorNode(&conf, globalAddressBook)
+		InitializeAllNodesInGlobalAddressBook(&conf, globalAddressBook) // Create partial viewership curves & addr books for each node
 
-		// Create initial message from the originator node to distribute through the network
+		// Pick a node and trigger the initial message to distribute through the network
+		origNode := getOriginatorNode(&conf, globalAddressBook)
 		msg := NewMessage(origNode.PartialAddressBook)
 		sendMessage(&conf, origNode.Address, msg, globalAddressBook, false)
 		log.Println("Running through global address book & executing message queue lexicographically")
@@ -78,15 +79,18 @@ func runQueue(c *Config, globalAddressBook AddressBook) (actionDone bool) {
 }
 
 func propagateMessage(c *Config, node *Node, message Message, globalAddressBook AddressBook) {
+	// TODO(drewsky): This could lead to a false positive if originator has a small view of the network
 	isOriginator := message.Level == message.TotalNumNetworkLevels
+
 	partialAddressBook, nodePosition := node.PartialAddressBook, node.PartialAddressBookPosition
-	// Get full list size (relative to sender)
 	partialAddressBookSize := len(partialAddressBook)
 	numNetworkLevels := CalculateNumLevelsInAddrBook(partialAddressBook)
-	// Calibrate levels (if message contains incorrect information)
-	// levelWithDec, levelWithoutDec := CalibrateLevels(numNetworkLevels, message)
+
+	// levelWithDec, levelWithoutDec := CalibrateLevels(numNetworkLevels, message) // Calibrate levels (if message contains incorrect information)
 	levelWithoutDec := int64(message.Level)
 	levelWithDec := int64(message.Level - 1)
+
+	// Update the message
 	message.Level = int(levelWithDec)
 	message.TotalNumNetworkLevels = int(numNetworkLevels)
 	// TODO(olshansky): Haven't explored redundancy yet

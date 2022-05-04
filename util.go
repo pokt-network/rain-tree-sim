@@ -30,7 +30,7 @@ func generatePartialViewershipCurve(c *Config) []int {
 	curveArr := make([]int, c.NumberOfNodes)
 	for i := range curveArr {
 		if c.InvertCurve {
-			// Discuss: what kind of inversion is this?
+			// TODO(drewsky): what kind of inversion is this?
 			curveArr[i] = int(math.Round(dist.Rand())+45) % 100
 		} else {
 			curveArr[i] = int(math.Round(dist.Rand()))

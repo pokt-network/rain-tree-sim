@@ -13,24 +13,27 @@ type ExportableAddressBook []NodeExportable
 
 type ExportedAddressBook []NodeExported
 
-// TODO: Should this return a pointer?
 func GenerateGlobalAddressBook(c *Config) (globalAddrBook AddressBook) {
 	// 1. Create a list of random addresses
 	globalAddrBook = make(AddressBook, c.NumberOfNodes)
 	for i := uint64(0); i < c.NumberOfNodes; i++ {
 		globalAddrBook[i] = CreateNode()
 	}
-	// 2. Sort addresses lexicographically
+
+	// 2. Sort addresses lexicographically. TODO(drewsky): Is this necessary since we sort on every other iteration anyhow
 	sort.Slice(globalAddrBook, func(i int, j int) bool {
 		return globalAddrBook[i].Address < globalAddrBook[j].Address
 	})
-	// 3. Make certain peers / addresses unreachable based on provided configs
+
+	// 3. Make certain peers / addresses unreachable based on provided configs to simulate a real network
 	for i := uint64(0); i < c.NumberOfNodes; i++ {
 		globalAddrBook[i].IsDead = getIsDead(c, i)
 	}
+
 	return
 }
 
+// TODO(olshansky): I don't love how much this function does, but it's okay for now
 func InitializeAllNodesInGlobalAddressBook(c *Config, globalAddrBook AddressBook) {
 	partialViewershipPercentages := generatePartialViewershipPercentages(c)
 	for i := uint64(0); i < c.NumberOfNodes; i++ {
@@ -71,6 +74,7 @@ func generatePartialViewershipPercentages(c *Config) []int {
 		})
 	}
 
+	// Only for debugging purposes
 	DumpPartialViewershipCurveToFile(partialViewershipPercentages)
 	PrintPartialViewershipCurveToFile(partialViewershipPercentages)
 

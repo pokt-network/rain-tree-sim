@@ -2,7 +2,7 @@ package main
 
 import "log"
 
-// TODO: Discuss how most things are being passed by value than by reference.
+// TODO(drewsky): Discuss how/why most things are being passed by value than by reference
 
 func main() {
 	config := LoadConfigFile()
