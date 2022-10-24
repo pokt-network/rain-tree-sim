@@ -1,14 +1,23 @@
-# RainTree Simulator
+# RainTree Simulator <!-- omit in toc -->
 
-The Python scripts in this package are used to simulate RainTree (in Python) in order to visualize, validate and understand the main Golang implementation.
+- [Code Structure](#code-structure)
+- [Feature Completeness](#feature-completeness)
+- [Test Generation](#test-generation)
+  - [Install Dependencies](#install-dependencies)
+  - [Generate Test](#generate-test)
 
-It uses a Breadth First Search approach to mimic the real implementation of RainTree (implemented in Go) in this library, and can be considered to be a "secondary client" to verify the real P2P implementation
+The Python scripts in this package are used to simulate RainTree (in Python) in order to understand, visualize and validate the Golang implementation in the main [V1 implementation](https://github.com/pokt-network/pocket).
+
+It uses a [Breadth First Search](https://en.wikipedia.org/wiki/Breadth-first_search) approach to mimic the real network based implementation of RainTree (implemented in Go), and can be considered to be an alternative "validation client" to verify the real P2P implementation.
+
+The primary goal is to use this library to generate unit tests that can be copy-pasted into the main repo.
 
 ## Code Structure
 
 ```bash
-p2p/raintree/simulator
+rain-tree-sim/python
 ├── README.md # This file
+├── requirements.txt # Python requirements to run file
 ├── simulator.py # Utility functions used to simulate RainTree
 └── test_generator.py # The entrypoint used by `make p2p_test_generator` to generate RainTree unit tests
 ```
@@ -30,7 +39,7 @@ p2p/raintree/simulator
 Make sure you install the corresponding dependencies
 
 ```bash
-    pip3 install -r p2p/raintree/simulator/requirements.txt
+    pip3 install -r python/requirements.txt
 ```
 
 ### Generate Test
