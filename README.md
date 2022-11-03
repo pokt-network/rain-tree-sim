@@ -1,3 +1,17 @@
+# RainTree Simulator <!-- omit in toc -->
+
+- [Golang Simulator](#golang-simulator)
+  - [Configurations](#configurations)
+- [Python Simulator](#python-simulator)
+- [Reasons for implementation](#reasons-for-implementation)
+  - [Generate Tests](#generate-tests)
+
+## Golang Simulator
+
+This is the first and OG implementation of RainTree used to prove out the concept implemented by @andrewnguyen22.
+
+### Configurations
+
 This simulator executes raintree WITHOUT the cleanup layer to better represent the coverage before the extra redundancy.
 
 ```
@@ -43,3 +57,19 @@ Nodes,Levels,Comms,Redundancy,Coverage,Missed,LongestMiss
 Number of nodes, number of levels, number of (total) communications, avg redundancy, NonDeadCoveragePercentage, how many missed?, longest consecutive miss?
 
 ```
+
+## Python Simulator
+
+This is an alternative implementation of RainTree that was implemented by @Olshansk to research, understand, and evaluate RainTree.
+
+## Reasons for implementation
+
+This was originally proposed in https://github.com/pokt-network/pocket/pull/316, but we decided that it does not belong in the official V1 implementation.
+
+- **Alternative approach to implementation**: this uses Breadth First Search to queue up and simulate the network propagation.
+- **Research Collaboration**: Python is a "more friendly" language when collaborating with the research community.
+- **Evaluation**: Visualization & evaluation libraries are more readily available in Python
+
+### Generate Tests
+
+See `python/README.md` for more details on how to use this library

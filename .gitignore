@@ -1,2 +1,8 @@
 vendor/*
 .idea/*
+
+# VS Code
+.vscode
+
+# Python Simulator
+python/__pycache__/
