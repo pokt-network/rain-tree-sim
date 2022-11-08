@@ -45,7 +45,7 @@ Make sure you install the corresponding dependencies.
 ### Using the Python Simulator 
 
 #### Prerequisite
-- Python: `v < 3.10.8` 
+- Python: `v3.10.8` or greater 
 - pip3
 
 ### Setup local Environment
