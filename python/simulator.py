@@ -18,15 +18,15 @@ def propagate(
     configs: RainTreeConfigs,
     queue: deque[RainTreeQueueElement],
 ) -> None:
-    addr, sender, node, addr_book, depth = elem
+    node, sender, addr_book, depth = elem
 
     # Return if the addr book is empty
     if len(addr_book) == 0:
         return
 
     # Not a demote - real message over a network
-    if addr != sender:
-        analytics.msgs_rec_map[addr] += 1
+    if node.name != sender:
+        analytics.msgs_rec_map[node.name] += 1
 
     # If the theoretical depth was reached and no nodes are missing, return
     if len(analytics.nodes_missing) == 0:
@@ -35,12 +35,12 @@ def propagate(
             return
 
     # A network message was sent
-    analytics.nodes_missing.discard(addr)
-    analytics.nodes_reached.add(addr)
+    analytics.nodes_missing.discard(node.name)
+    analytics.nodes_reached.add(node.name)
 
     # Configure who the current node should send messages to
     n = len(addr_book)
-    i = addr_book.index(addr)
+    i = addr_book.index(node.name)
     t1 = (i + int(n * configs.t1_per)) % n
     t2 = (i + int(n * configs.t2_per)) % n
     s = (i + int(n * configs.shrinkage_per)) % n
@@ -50,7 +50,7 @@ def propagate(
 
     if t1_addr == t2_addr:
         t2_addr = None
-    if t1_addr == addr:
+    if t1_addr == node.name:
         t1_addr = None
 
     def send(t: int, t_addr: str) -> None:
@@ -60,9 +60,8 @@ def propagate(
         queue.append(
             (
                 RainTreeQueueElement(
-                    t_addr,
-                    addr,
                     Node(t_addr, node),
+                    node.name,
                     t_book_s,
                     depth + 1,
                 ),
@@ -74,7 +73,7 @@ def propagate(
 
         analytics.nodes_missing.discard(t_addr)
         analytics.nodes_reached.add(t_addr)
-        analytics.msgs_sent_map[addr] += 1
+        analytics.msgs_sent_map[node.name] += 1
         print(f"Msg: {format_send_message(addr_book, i, t)}")
 
     # Send a message to the first target
@@ -91,9 +90,8 @@ def propagate(
         queue.append(
             (
                 RainTreeQueueElement(
-                    addr,
-                    addr,
-                    Node(addr, node),
+                    Node(node.name, node),
+                    node.name,
                     addr_book_s,
                     depth + 1,
                 ),
@@ -118,9 +116,8 @@ def simulate(
     queue.append(
         (
             RainTreeQueueElement(
-                orig_addr,
-                orig_addr,
                 root_node,
+                orig_addr,
                 raintreeConfigs.addr_book,
                 0,
             ),

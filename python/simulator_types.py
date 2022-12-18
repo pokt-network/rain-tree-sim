@@ -66,18 +66,16 @@ class RainTreeAnalytics:
 # where each element in the queue is an instance of this class
 @dataclass
 class RainTreeQueueElement:
-    addr: str # The addr of the node handling the current message/propagation
-    sender: str # sender addr (who sent the message to addr)
     node: Node # current node correspond to addr
+    sender_addr: str # sender addr (who sent the message to addr)
     addr_book: List[str] # The addr book of the current node (i.e. list of sorted addresses)
     depth: int # the current depth in the propagations
 
     def __iter__(self):
         return iter(
             (
-                self.addr,
-                self.sender,
                 self.node,
+                self.sender_addr,
                 self.addr_book,
                 self.depth,
             )
