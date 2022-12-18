@@ -140,8 +140,8 @@ def simulate(
 # TODO(olshansky): Make sure these are colored in the output in terminal for easier readability
 def display_simulation_results(
     root_node: Node,
-    analytics: RainTreeAnalytics,
     raintreeConfigs: RainTreeConfigs,
+    analytics: RainTreeAnalytics,
 ) -> None:
     print("\n###################\n")
     print_tree(root_node, horizontal=False)

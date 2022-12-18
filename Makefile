@@ -38,4 +38,4 @@ rainTreeTestOutputFilename ?= "/tmp/answer.go" # This is the default file where 
 ## Generate a RainTree unit test configured for `numRainTreeNodes` and written to `rainTreeTestOutputFilename`
 p2p_test_generator: py_check
 	echo "See python/README.md for additional details"
-	python3 python/test_generator.py --num_nodes=${numRainTreeNodes} --output_file=${rainTreeTestOutputFilename}
+	python3 python/main.py --num_nodes=${numRainTreeNodes} --output_file=${rainTreeTestOutputFilename}
