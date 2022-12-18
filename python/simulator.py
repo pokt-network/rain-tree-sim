@@ -2,12 +2,13 @@ import math
 import warnings
 from collections import deque
 from typing import List, Tuple
+
 from helpers import *
 from pptree import (  # INVESTIGATE: Consider using this library (in addition or instead) since it has custom typing: https://github.com/liwt31/print_tree
     Node,
     print_tree,
 )
-from simulator_types import RainTreeAnalytics, RainTreeQueueElement, RainTreeConfigs
+from simulator_types import RainTreeAnalytics, RainTreeConfigs, RainTreeQueueElement
 
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
@@ -28,34 +29,20 @@ def propagate(
     if node.name != sender:
         analytics.msgs_rec_map[node.name] += 1
 
+    # A network message was received
+    analytics.nodes_missing.discard(node.name)
+    analytics.nodes_reached.add(node.name)
+
     # If the theoretical depth was reached and no nodes are missing, return
     if len(analytics.nodes_missing) == 0:
         analytics.depth_reached_map[depth] += 1
         if depth >= configs.max_theoretical_depth:
             return
 
-    # A network message was sent
-    analytics.nodes_missing.discard(node.name)
-    analytics.nodes_reached.add(node.name)
-
-    # Configure who the current node should send messages to
-    n = len(addr_book)
-    i = addr_book.index(node.name)
-    t1 = (i + int(n * configs.t1_per)) % n
-    t2 = (i + int(n * configs.t2_per)) % n
-    s = (i + int(n * configs.shrinkage_per)) % n
-
-    t1_addr = addr_book[t1]
-    t2_addr = addr_book[t2]
-
-    if t1_addr == t2_addr:
-        t2_addr = None
-    if t1_addr == node.name:
-        t1_addr = None
-
+    # Define function to perform a network send
     def send(t: int, t_addr: str) -> None:
         analytics.msgs_sent += 1
-        t_s = (t + int(n * configs.shrinkage_per)) % n
+        t_s = (t + int(num_nodes * configs.shrinkage_per)) % num_nodes
         t_book_s = shrink_list(addr_book.copy(), t, t_s)
         queue.append(
             (
@@ -74,18 +61,37 @@ def propagate(
         analytics.nodes_missing.discard(t_addr)
         analytics.nodes_reached.add(t_addr)
         analytics.msgs_sent_map[node.name] += 1
-        print(f"Msg: {format_send_message(addr_book, i, t)}")
+        print(f"Msg: {format_send_message(addr_book, node_idx, t)}")
 
-    # Send a message to the first target
+    # Configure who the current node should send messages to
+    num_nodes = len(
+        addr_book
+    )  # not using configs.num_nodes because we need the length of the current addressb ook
+    node_idx = addr_book.index(node.name)
+    t1_idx = (node_idx + int(num_nodes * configs.t1_per)) % num_nodes
+    t2_idx = (node_idx + int(num_nodes * configs.t2_per)) % num_nodes
+
+    t1_addr = addr_book[t1_idx]
+    t2_addr = addr_book[t2_idx]
+
+    if t1_addr == t2_addr:
+        t2_addr = None
+    if t1_addr == node.name:
+        t1_addr = None
+
+    # Send a message to the target 1
     if t1_addr is not None:
-        send(t1, t1_addr)
+        send(t1_idx, t1_addr)
 
-    # Send a message to the second target
+    # Send a message to the target 2
     if t2_addr is not None:
-        send(t2, t2_addr)
+        send(t2_idx, t2_addr)
 
     # Demote - not incrementing `msg_send_counter` since it's not a send
-    addr_book_s = shrink_list(addr_book, i, s)
+    s = (
+        node_idx + int(num_nodes * configs.shrinkage_per)
+    ) % num_nodes  # shrunk_addr_book_end_index
+    addr_book_s = shrink_list(addr_book, node_idx, s)
     if len(addr_book_s) > 1:
         queue.append(
             (
@@ -143,9 +149,13 @@ def display_simulation_results(
     print("\n###################\n")
     print_tree(root_node, horizontal=False)
     print("\n###################\n")
-    print(f"Coefficients used: t1: {raintreeConfigs.t1_per:.3f}, t2: {raintreeConfigs.t2_per:.3f}, shrinkage: {raintreeConfigs.shrinkage_per:.3f}")
+    print(
+        f"Coefficients used: t1: {raintreeConfigs.t1_per:.3f}, t2: {raintreeConfigs.t2_per:.3f}, shrinkage: {raintreeConfigs.shrinkage_per:.3f}"
+    )
     print(f"Num messages sent: {analytics.msgs_sent}")
-    print(f"Num nodes reached: {len(analytics.nodes_reached)}/ {raintreeConfigs.num_nodes}")
+    print(
+        f"Num nodes reached: {len(analytics.nodes_reached)}/ {raintreeConfigs.num_nodes}"
+    )
     print(
         f"Messages received: {dict(dict(sorted(analytics.msgs_rec_map.items(), key=lambda item: -item[1])))}"
     )

@@ -1,7 +1,9 @@
 import argparse
+
 from simulator import display_simulation_results, simulate
 from simulator_types import RainTreeConfigs
 from test_generator import prepare_test
+
 
 def main(args):
     # Simulation Parameters
@@ -36,21 +38,21 @@ if __name__ == "__main__":
         "--t1_per",
         dest="t1_per",
         type=float,
-        default=1/3,
+        default=1 / 3,
         help="% target of first message in the sorted address book",
     )
     parser.add_argument(
         "--t2_per",
         dest="t2_per",
         type=float,
-        default=2/3,
+        default=2 / 3,
         help="% target of first message in the sorted address book",
     )
     parser.add_argument(
         "--shrinkage_per",
         dest="shrinkage_per",
         type=float,
-        default=2/3,
+        default=2 / 3,
         help="% shrinkage of addr book with each decreased level",
     )
     parser.add_argument(
