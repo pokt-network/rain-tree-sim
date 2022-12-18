@@ -2,23 +2,23 @@ import math
 import warnings
 from collections import deque
 from typing import List, Tuple
-
 from helpers import *
 from pptree import (  # INVESTIGATE: Consider using this library (in addition or instead) since it has custom typing: https://github.com/liwt31/print_tree
     Node,
     print_tree,
 )
-
+from simulator_types import RainTreeAnalytics, RainTreeQueueElement, RainTreeConfigs
 
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 # A single RainTree propagation step
 def propagate(
-    p: PropagationQueueElement,
-    counters: Counters,
-    queue: deque[PropagationQueueElement],
+    elem: RainTreeQueueElement,
+    analytics: RainTreeAnalytics,
+    configs: RainTreeConfigs,
+    queue: deque[RainTreeQueueElement],
 ) -> None:
-    addr, addr_book, depth, t1_per, t2_per, s_per, node, sender = p
+    addr, sender, node, addr_book, depth = elem
 
     # Return if the addr book is empty
     if len(addr_book) == 0:
@@ -26,24 +26,24 @@ def propagate(
 
     # Not a demote - real message over a network
     if addr != sender:
-        counters.msgs_rec_map[addr] += 1
+        analytics.msgs_rec_map[addr] += 1
 
     # If the theoretical depth was reached and no nodes are missing, return
-    if len(counters.nodes_missing) == 0:
-        counters.depth_reached_map[depth] += 1
-        if depth >= counters.max_theoretical_depth:
+    if len(analytics.nodes_missing) == 0:
+        analytics.depth_reached_map[depth] += 1
+        if depth >= configs.max_theoretical_depth:
             return
 
     # A network message was sent
-    counters.nodes_missing.discard(addr)
-    counters.nodes_reached.add(addr)
+    analytics.nodes_missing.discard(addr)
+    analytics.nodes_reached.add(addr)
 
     # Configure who the current node should send messages to
     n = len(addr_book)
     i = addr_book.index(addr)
-    t1 = (i + int(n * t1_per)) % n
-    t2 = (i + int(n * t2_per)) % n
-    s = (i + int(n * s_per)) % n
+    t1 = (i + int(n * configs.t1_per)) % n
+    t2 = (i + int(n * configs.t2_per)) % n
+    s = (i + int(n * configs.shrinkage_per)) % n
 
     t1_addr = addr_book[t1]
     t2_addr = addr_book[t2]
@@ -54,29 +54,27 @@ def propagate(
         t1_addr = None
 
     def send(t: int, t_addr: str) -> None:
-        counters.msgs_sent += 1
-        t_s = (t + int(n * s_per)) % n
+        analytics.msgs_sent += 1
+        t_s = (t + int(n * configs.shrinkage_per)) % n
         t_book_s = shrink_list(addr_book.copy(), t, t_s)
         queue.append(
             (
-                PropagationQueueElement(
+                RainTreeQueueElement(
                     t_addr,
+                    addr,
+                    Node(t_addr, node),
                     t_book_s,
                     depth + 1,
-                    t1_per,
-                    t2_per,
-                    s_per,
-                    Node(t_addr, node),
-                    addr,
                 ),
-                counters,
+                analytics,
+                configs,
                 queue,
             )
         )
 
-        counters.nodes_missing.discard(t_addr)
-        counters.nodes_reached.add(t_addr)
-        counters.msgs_sent_map[addr] += 1
+        analytics.nodes_missing.discard(t_addr)
+        analytics.nodes_reached.add(t_addr)
+        analytics.msgs_sent_map[addr] += 1
         print(f"Msg: {format_send_message(addr_book, i, t)}")
 
     # Send a message to the first target
@@ -92,17 +90,15 @@ def propagate(
     if len(addr_book_s) > 1:
         queue.append(
             (
-                PropagationQueueElement(
+                RainTreeQueueElement(
                     addr,
+                    addr,
+                    Node(addr, node),
                     addr_book_s,
                     depth + 1,
-                    t1_per,
-                    t2_per,
-                    s_per,
-                    Node(addr, node),
-                    addr,
                 ),
-                counters,
+                analytics,
+                configs,
                 queue,
             )
         )
@@ -111,63 +107,51 @@ def propagate(
 # A single RainTree Simulation
 def simulate(
     orig_addr: str,
-    addr_book: List[str],
-    t1: float,
-    t2: float,
-    shrinkage: float,
-) -> Tuple[Node, Counters]:
-    num_nodes = len(addr_book)
-
+    raintreeConfigs: RainTreeConfigs,
+) -> Tuple[Node, RainTreeAnalytics]:
     # Configure Simulation
-    prop_queue = deque()
-    max_allowed_depth = math.log(
-        num_nodes, 3
-    )  # 3 comes from the fact that we use a ternary tree
-    counters = Counters(addr_book, max_allowed_depth)
+    queue = deque()
+    analytics = RainTreeAnalytics(raintreeConfigs.addr_book)
 
     # Prepare Simulation
     root_node = Node(orig_addr)
-    prop_queue.append(
+    queue.append(
         (
-            PropagationQueueElement(
+            RainTreeQueueElement(
                 orig_addr,
-                addr_book,
-                0,
-                t1,
-                t2,
-                shrinkage,
+                orig_addr,
                 root_node,
-                orig_addr,
+                raintreeConfigs.addr_book,
+                0,
             ),
-            counters,
-            prop_queue,
+            analytics,
+            raintreeConfigs,
+            queue,
         )
     )
 
     # Run Simulation to completion
-    while len(prop_queue) > 0:
-        propagate(*prop_queue.popleft())
+    while len(queue) > 0:
+        propagate(*queue.popleft())
 
-    return root_node, counters
+    return root_node, analytics
 
 
-def print_results(
-    node: Node,
-    counters: Counters,
-    t1: float,
-    t2: float,
-    shrinkage: float,
-    num_nodes: int,
+# TODO(olshansky): Make sure these are colored in the output in terminal for easier readability
+def display_simulation_results(
+    root_node: Node,
+    analytics: RainTreeAnalytics,
+    raintreeConfigs: RainTreeConfigs,
 ) -> None:
     print("\n###################\n")
-    print_tree(node, horizontal=False)
+    print_tree(root_node, horizontal=False)
     print("\n###################\n")
-    print(f"Coefficients used: t1: {t1:.3f}, t2: {t2:.3f}, shrinkage: {shrinkage:.3f}")
-    print(f"Num messages sent: {counters.msgs_sent}")
-    print(f"Num nodes reached: {len(counters.nodes_reached)}/ {num_nodes}")
+    print(f"Coefficients used: t1: {raintreeConfigs.t1_per:.3f}, t2: {raintreeConfigs.t2_per:.3f}, shrinkage: {raintreeConfigs.shrinkage_per:.3f}")
+    print(f"Num messages sent: {analytics.msgs_sent}")
+    print(f"Num nodes reached: {len(analytics.nodes_reached)}/ {raintreeConfigs.num_nodes}")
     print(
-        f"Messages received: {dict(dict(sorted(counters.msgs_rec_map.items(), key=lambda item: -item[1])))}"
+        f"Messages received: {dict(dict(sorted(analytics.msgs_rec_map.items(), key=lambda item: -item[1])))}"
     )
     print(
-        f"Messages sent: {dict(dict(sorted(counters.msgs_sent_map.items(), key=lambda item: -item[1])))}"
+        f"Messages sent: {dict(dict(sorted(analytics.msgs_sent_map.items(), key=lambda item: -item[1])))}"
     )
