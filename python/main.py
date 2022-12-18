@@ -62,5 +62,19 @@ if __name__ == "__main__":
         default="raintree_single_test.go",
         help="Output file where the generated Golang test should be written to",
     )
+
+    # To implement:
+    # Adjust & Resend
+    #   If send fails -> Send message to +1 & -1 in the list (relative to failure node) with depth-1 -> do not expect a response
+    # Cleanup:
+    #   At level 1 -> send level 0 message to left & right peers in addr book
+    # Redundancy:
+    #   At level 1 -> send level 0 message to left & right peers in addr book
+
+    # References to think about:
+    #   https://github.com/pokt-network/pocket-network-protocol/tree/main/p2p
+    #   https://github.com/pokt-network/pocket/tree/main/p2p
+    #   https://github.com/pokt-network/pocket/pull/368/files
+
     args = parser.parse_args()
     main(args)
