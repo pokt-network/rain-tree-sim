@@ -1,90 +1,16 @@
 import math
 import warnings
-from collections import defaultdict, deque
-from dataclasses import dataclass
-from typing import Dict, List, Tuple
+from collections import deque
+from typing import List, Tuple
 
-# TODO(olshansky): Consider investigating this library as well since it has custom typing: https://github.com/liwt31/print_tree
-from pptree import Node, print_tree
+from helpers import *
+from pptree import (  # INVESTIGATE: Consider using this library (in addition or instead) since it has custom typing: https://github.com/liwt31/print_tree
+    Node,
+    print_tree,
+)
+
 
 warnings.filterwarnings("ignore", category=DeprecationWarning)
-
-# ~~~ Helpers ~~~
-
-# Returns a subset of the list with items from `i1` to `i2` in `l` wrapping around if needed
-def shrink_list(l: List[str], i1: int, i2: int) -> List[str]:
-    if i1 <= i2:
-        return l[i1:i2]
-    return l[i1:] + l[:i2]
-
-
-# Formats a string showing who the sender and receivers were
-def format_send_message(l: List[str], self_index: int, target: int) -> str:
-    s = "[ "
-    for idx, n in enumerate(l):
-        if idx == self_index:
-            s += f"({n}), "
-        elif idx == target:
-            s += f"**{n}**, "
-        else:
-            s += f"{n}, "
-    return f"{s[:-2]} ]"
-
-
-# Sum the values from two dictionaries where the keys overlap
-def agg_dicts(d1: Dict[str, int], d2: Dict[str, int]) -> Dict[str, int]:
-    return {k: d1.get(k, 0) + d2.get(k, 0) for k in set(d1) | set(d2)}
-
-
-# ~~~ Data Types ~~~
-
-
-@dataclass
-class Counters:
-    msgs_sent: int  # Total num of messages sent by RainTree propagating
-    nodes_reached: set[str]  # Nodes reached by current RainTree propagating
-    nodes_missing: set[str]  # Nodes not yet reached by current RainTree propagating
-    msgs_rec_map: defaultdict[str, int]  # Num messages received by node addr
-    msgs_sent_map: defaultdict[str, int]  # Num messages sent by node addr
-    depth_reached_map: defaultdict[str, int]  # Max depth reached by node addr
-    # Theoretical max depth, used to end propagating early
-    max_theoretical_depth: int
-
-    def __init__(self, nodes: List[str], max_allowed_depth: int):
-        self.msgs_sent = 0
-        self.nodes_reached = set()
-        self.nodes_missing = set(nodes)
-        self.msgs_rec_map = defaultdict(int)
-        self.msgs_sent_map = defaultdict(int)
-        self.depth_reached_map = defaultdict(int)
-        self.max_theoretical_depth = max_allowed_depth
-
-
-@dataclass
-class PropagationQueueElement:
-    addr: str  # The addr of the node propagating the message
-    addr_book: List[str]  # the addr's current addr book
-    depth: int  # the current depth in the propagations
-    t1: float  # % of location in addr book for target 1
-    t2: float  # % of location in addr book for target 1
-    shrinkage: float  # addr book shrinkage coefficient
-    node: Node  # current node
-    sender: str  # sender addr (who sent the message to addr)
-
-    def __iter__(self):
-        return iter(
-            (
-                self.addr,
-                self.addr_book,
-                self.depth,
-                self.t1,
-                self.t2,
-                self.shrinkage,
-                self.node,
-                self.sender,
-            )
-        )
-
 
 # A single RainTree propagation step
 def propagate(

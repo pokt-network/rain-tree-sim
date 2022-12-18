@@ -4,7 +4,6 @@ import sys
 import stringcase
 from num2words import num2words
 from pptree import Node, print_tree
-
 from simulator import Counters, print_results, simulate
 
 TEST_FORMAT = """
